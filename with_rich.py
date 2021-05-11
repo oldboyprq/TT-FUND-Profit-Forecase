@@ -49,65 +49,65 @@ def get_internet_info(infos: dict):
 
 
 def show_info(nums: dict, today: list, sec: int):
-    while True:
-        fund_yk = list()
-        fund_total = list()
-        table = Table(title="基金当日收益预估")
-        table.add_column("基金代码", style='blue', justify='center')
-        table.add_column("基金名称", justify="center")
-        table.add_column("{}净值".format(today[0]['jzrq']), justify="center")
-        table.add_column("{}估值".format(today[0]['gztime']), justify="center")
-        table.add_column("涨跌情况", justify="center")
-        table.add_column("持有份额", justify="center", style="Purple")
-        table.add_column("当日预估盈亏", justify="center")
-        table.add_column("持有总额", justify="center")
-        table.add_column("刷新时间", justify="center", style="yellow")
-        for fund_today in today:  # fundcode":"320007","name":"璇哄畨鎴愰暱娣峰悎","jzrq":"2021-05-10","dwjz":"1.5430",
-            # "gsz":"1.5258","gszzl":"-1.12","gztime":"2021-05-11 10:57"
-            money_yk = nums[fund_today['fundcode']] * (float(fund_today['gsz'])-float(fund_today['dwjz']))
-            fund_yk.append(money_yk)
-            money_total = nums[fund_today['fundcode']] * float(fund_today['gsz'])
-            fund_total.append(money_total)
-            if float(fund_today['gszzl']) < 0:
-                table.add_row(fund_today['fundcode'],
-                              fund_today['name'],
-                              fund_today['dwjz'],
-                              '[green]'+ fund_today['gsz'] + '[/green]',
-                              '[green]' + fund_today['gszzl'] + '%' + '[/green]',
-                              str(nums[fund_today['fundcode']]),
-                              '[green]' + str('%.2f' % money_yk) + '[/green]',
-                              str('%.2f' % money_total),
-                              fund_today['gztime'])
-            else:
-                table.add_row(fund_today['fundcode'],
-                              fund_today['name'],
-                              fund_today['dwjz'],
-                              '[red]' + fund_today['gsz'] + '[/red]',
-                              '[red]' + '+' + fund_today['gszzl'] + '%' + '[/red]',
-                              str(nums[fund_today['fundcode']]),
-                              '[red]' + '+' + str('%.2f' % money_yk) + '[/red]',
-                              str('%.2f' % money_total),
-                              fund_today['gztime'])
-        if sum(fund_yk) > 0:
-            table.add_row('---', '---', '---', '---', '---', '---',
-                          '[red]' + '+' + str('%.2f' % sum(fund_yk)) + '[/red]',
-                          str('%.2f' % sum(fund_total)), '---', )
+    fund_yk = list()
+    fund_total = list()
+    table = Table(title="基金当日收益预估")
+    table.add_column("基金代码", style='blue', justify='center')
+    table.add_column("基金名称", justify="center")
+    table.add_column("{}净值".format(today[0]['jzrq']), justify="center")
+    table.add_column("{}估值".format(today[0]['gztime']), justify="center")
+    table.add_column("涨跌情况", justify="center")
+    table.add_column("持有份额", justify="center", style="Purple")
+    table.add_column("当日预估盈亏", justify="center")
+    table.add_column("持有总额", justify="center")
+    table.add_column("刷新时间", justify="center", style="yellow")
+    for fund_today in today:  # fundcode":"320007","name":"璇哄畨鎴愰暱娣峰悎","jzrq":"2021-05-10","dwjz":"1.5430",
+        # "gsz":"1.5258","gszzl":"-1.12","gztime":"2021-05-11 10:57"
+        money_yk = nums[fund_today['fundcode']] * (float(fund_today['gsz'])-float(fund_today['dwjz']))
+        fund_yk.append(money_yk)
+        money_total = nums[fund_today['fundcode']] * float(fund_today['gsz'])
+        fund_total.append(money_total)
+        if float(fund_today['gszzl']) < 0:
+            table.add_row(fund_today['fundcode'],
+                          fund_today['name'],
+                          fund_today['dwjz'],
+                          '[green]'+ fund_today['gsz'] + '[/green]',
+                          '[green]' + fund_today['gszzl'] + '%' + '[/green]',
+                          str(nums[fund_today['fundcode']]),
+                          '[green]' + str('%.2f' % money_yk) + '[/green]',
+                          str('%.2f' % money_total),
+                          fund_today['gztime'])
         else:
-            table.add_row('---', '---', '---', '---', '---', '---',
-                          '[green]' + str('%.2f' % sum(fund_yk)) + '[/green]',
-                          str('%.2f' % sum(fund_total)), '---', )
-        console = Console()
-        console.print(table, justify="center")
-        print("按CTRL+C退出")
-        time.sleep(sec)
-        os.system("cls")
+            table.add_row(fund_today['fundcode'],
+                          fund_today['name'],
+                          fund_today['dwjz'],
+                          '[red]' + fund_today['gsz'] + '[/red]',
+                          '[red]' + '+' + fund_today['gszzl'] + '%' + '[/red]',
+                          str(nums[fund_today['fundcode']]),
+                          '[red]' + '+' + str('%.2f' % money_yk) + '[/red]',
+                          str('%.2f' % money_total),
+                          fund_today['gztime'])
+    if sum(fund_yk) > 0:
+        table.add_row('---', '---', '---', '---', '---', '---',
+                      '[red]' + '+' + str('%.2f' % sum(fund_yk)) + '[/red]',
+                      str('%.2f' % sum(fund_total)), '---', )
+    else:
+        table.add_row('---', '---', '---', '---', '---', '---',
+                      '[green]' + str('%.2f' % sum(fund_yk)) + '[/green]',
+                      str('%.2f' % sum(fund_total)), '---', )
+    console = Console()
+    console.print(table, justify="center")
+    print("按CTRL+C退出")
+    time.sleep(sec)
+    os.system("cls")
 
 
 def main():
     sec = int(input("请输入刷新时间(秒):"))
     a = get_local_info()
-    b = get_internet_info(a)
-    show_info(a, b, sec)
+    while True:
+        b = get_internet_info(a)
+        show_info(a, b, sec)
 
 
 if __name__ == '__main__':
